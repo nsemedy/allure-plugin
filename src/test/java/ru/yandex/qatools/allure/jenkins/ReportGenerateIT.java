@@ -141,7 +141,7 @@ public class ReportGenerateIT {
     @Test
     public void shouldGenerateReportForMatrixItem() throws Exception {
         MatrixProject project = jRule.createProject(MatrixProject.class);
-        project.getAxes().add(new Axis("labels", "first", "second"));
+        project.getAxes().add(new Axis("labels", "firefox", "chrome"));
         project.setScm(getSimpleFileScm("sample-testsuite.xml", ALLURE_RESULTS));
         project.getPublishersList().add(createAllurePublisher("allure-results"));
 
@@ -157,7 +157,7 @@ public class ReportGenerateIT {
     @Test
     public void shouldGenerateAggregatedReportForMatrixJobs() throws Exception {
         MatrixProject project = jRule.createProject(MatrixProject.class);
-        project.getAxes().add(new Axis("labels", "first", "second", "third"));
+        project.getAxes().add(new Axis("labels", "ubuntu", "macos"));
         project.setScm(getSimpleFileScm("sample-testsuite.xml", ALLURE_RESULTS));
         project.getPublishersList().add(createAllurePublisher("allure-results"));
 
