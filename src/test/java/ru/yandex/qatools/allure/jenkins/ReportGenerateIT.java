@@ -141,7 +141,7 @@ public class ReportGenerateIT {
     @Test
     public void shouldGenerateReportForMatrixItem() throws Exception {
         MatrixProject project = jRule.createProject(MatrixProject.class);
-        project.getAxes().add(new Axis("labels", "a", "b"));
+        project.getAxes().add(new Axis("labels", "first", "second"));
         project.setScm(getSimpleFileScm("sample-testsuite.xml", ALLURE_RESULTS));
         project.getPublishersList().add(createAllurePublisher("allure-results"));
 
