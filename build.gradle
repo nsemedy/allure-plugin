@@ -40,9 +40,14 @@ tasks.withType(Javadoc) {
     options.addStringOption('Xdoclint:none', '-quiet')
 }
 
-task downloadAllure(type: Download) {
-    src "https://dl.bintray.com/qameta/generic/io/qameta/allure/allure/${allureVersion}/allure-${allureVersion}.zip"
-    dest "$buildDir/resources/test/allure-commandline.zip"
+//task downloadAllure(type: Download) {
+//    src "https://dl.bintray.com/qameta/generic/io/qameta/allure/allure/${allureVersion}/allure-${allureVersion}.zip"
+//    dest "$buildDir/resources/test/allure-commandline.zip"
+//}
+
+task downloadAllure(type: Copy) {
+    from file("${rootProject.projectDir}/allure-commandline.zip")
+    into file("${buildDir}/resources/test")
 }
 
 processTestResources.dependsOn(downloadAllure)
