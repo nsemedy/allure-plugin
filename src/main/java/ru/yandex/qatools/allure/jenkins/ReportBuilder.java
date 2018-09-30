@@ -76,16 +76,11 @@ public class ReportBuilder {
         arguments.add(reportPath.getRemote());
 
         arguments.add(CONFIG_OPTION);
-        arguments.add(getConfigPath());
+        arguments.add(StringUtils.isNotBlank(this.configPath) ? this.configPath
+                : commandline.getConfigPathAsString(launcher)
+        );
 
         return arguments;
-    }
-
-    private String getConfigPath() throws IOException {
-        if (StringUtils.isNotBlank(this.configPath)) {
-            return this.configPath;
-        }
-        return commandline.getConfigPathAsString();
     }
 
     private ArgumentListBuilder getAllure1Arguments(@Nonnull List<FilePath> resultsPaths,

@@ -68,6 +68,19 @@ public class AllureCommandlineInstallation extends ToolInstallation
         });
     }
 
+    public String getConfigPathAsString(@Nonnull Launcher launcher) throws InterruptedException, IOException {
+        return launcher.getChannel().call(new MasterToSlaveCallable<String, IOException>() {
+            @Override
+            public String call() throws IOException {
+                final Path configPath = getConfigPath();
+                if (configPath == null || Files.notExists(configPath)) {
+                    throw new IOException(String.format(CAN_FIND_ALLURE_CONFIG_MESSAGE, configPath));
+                }
+                return configPath.toAbsolutePath().toString();
+            }
+        });
+    }
+
     private Path getHomePath() {
         final String home = Util.replaceMacro(getHome(), EnvVars.masterEnvVars);
         if (home == null) {
@@ -98,13 +111,9 @@ public class AllureCommandlineInstallation extends ToolInstallation
         return home == null ? null : home.resolve(Functions.isWindows() ? "bin/allure.bat" : "bin/allure");
     }
 
-    public String getConfigPathAsString() throws IOException {
+    private Path getConfigPath() {
         final Path home = getHomePath();
-        final Path configPath = home == null ? null : home.resolve("config/allure.yml");
-        if (configPath == null || Files.notExists(configPath)) {
-            throw new IOException(String.format(CAN_FIND_ALLURE_CONFIG_MESSAGE, configPath));
-        }
-        return configPath.toAbsolutePath().toString();
+        return home == null ? null : home.resolve("config/allure.yml");
     }
 
     @Override
