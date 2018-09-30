@@ -34,6 +34,7 @@ public class AllureCommandlineInstallation extends ToolInstallation
         implements EnvironmentSpecific<AllureCommandlineInstallation>, NodeSpecific<AllureCommandlineInstallation> {
 
     private static final String CAN_FIND_ALLURE_MESSAGE = "Can't find allure commandline <%s>";
+    private static final String CAN_FIND_ALLURE_CONFIG_MESSAGE = "Can't find allure config <%s>";
 
     @DataBoundConstructor
     public AllureCommandlineInstallation(String name, String home, List<? extends ToolProperty<?>> properties) {
@@ -95,6 +96,15 @@ public class AllureCommandlineInstallation extends ToolInstallation
     private Path getExecutablePath() {
         final Path home = getHomePath();
         return home == null ? null : home.resolve(Functions.isWindows() ? "bin/allure.bat" : "bin/allure");
+    }
+
+    public String getConfigPathAsString() throws IOException {
+        final Path home = getHomePath();
+        final Path configPath = home == null ? null : home.resolve("config/allure.yml");
+        if (configPath == null || Files.notExists(configPath)) {
+            throw new IOException(String.format(CAN_FIND_ALLURE_CONFIG_MESSAGE, configPath));
+        }
+        return configPath.toAbsolutePath().toString();
     }
 
     @Override

@@ -42,7 +42,7 @@ public class CommandlineIT {
         Launcher launcher = new Launcher.LocalLauncher(listener);
         FilePath workspace = new FilePath(folder.newFolder());
         workspace.mkdirs();
-        builder = new ReportBuilder(launcher, listener, workspace, envVars, allure);
+        builder = new ReportBuilder(launcher, listener, workspace, envVars, allure, null);
     }
 
     @Test

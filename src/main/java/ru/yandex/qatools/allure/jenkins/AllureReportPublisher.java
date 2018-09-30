@@ -70,6 +70,8 @@ public class AllureReportPublisher extends Recorder implements SimpleBuildStep, 
 
     private String commandline;
 
+    private String configPath;
+
     private List<PropertyConfig> properties = new ArrayList<>();
 
     private List<ResultsConfig> results;
@@ -130,6 +132,15 @@ public class AllureReportPublisher extends Recorder implements SimpleBuildStep, 
             this.commandline = this.config.getCommandline();
         }
         return this.commandline;
+    }
+
+    @DataBoundSetter
+    public void setConfigPath(String configPath) {
+        this.configPath = configPath;
+    }
+
+    public String getConfigPath() {
+        return this.configPath;
     }
 
     @DataBoundSetter
@@ -290,7 +301,7 @@ public class AllureReportPublisher extends Recorder implements SimpleBuildStep, 
         final AllureCommandlineInstallation commandline = getCommandline(launcher, listener, buildEnvVars);
         final FilePath reportPath = workspace.child(getReport());
 
-        final int exitCode = new ReportBuilder(launcher, listener, workspace, buildEnvVars, commandline)
+        final int exitCode = new ReportBuilder(launcher, listener, workspace, buildEnvVars, commandline, getConfigPath())
                 .build(resultsPaths, reportPath);
         if (exitCode != 0) {
             throw new AllurePluginException("Can not generate Allure Report, exit code: " + exitCode);

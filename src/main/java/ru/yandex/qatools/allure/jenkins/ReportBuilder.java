@@ -5,6 +5,7 @@ import hudson.FilePath;
 import hudson.Launcher;
 import hudson.model.TaskListener;
 import hudson.util.ArgumentListBuilder;
+import org.apache.commons.lang.StringUtils;
 import ru.yandex.qatools.allure.jenkins.tools.AllureCommandlineInstallation;
 
 import javax.annotation.Nonnull;
@@ -20,6 +21,8 @@ public class ReportBuilder {
     private static final String GENERATE_COMMAND = "generate";
     private static final String OUTPUT_DIR_OPTION = "-o";
     private static final String CLEAN_OPTION = "-c";
+    private static final String CONFIG_OPTION = "--config";
+
     private final FilePath workspace;
 
     private final Launcher launcher;
@@ -30,13 +33,17 @@ public class ReportBuilder {
 
     private final AllureCommandlineInstallation commandline;
 
+    private final String configPath;
+
     public ReportBuilder(@Nonnull Launcher launcher, @Nonnull TaskListener listener, @Nonnull FilePath workspace,
-                         @Nonnull EnvVars envVars, @Nonnull AllureCommandlineInstallation commandline) {
+                         @Nonnull EnvVars envVars, @Nonnull AllureCommandlineInstallation commandline,
+                        String configPath) {
         this.workspace = workspace;
         this.launcher = launcher;
         this.listener = listener;
         this.envVars = envVars;
         this.commandline = commandline;
+        this.configPath = configPath;
     }
 
     public int build(@Nonnull List<FilePath> resultsPaths, @Nonnull FilePath reportPath) //NOSONAR
@@ -67,7 +74,18 @@ public class ReportBuilder {
         arguments.add(CLEAN_OPTION);
         arguments.add(OUTPUT_DIR_OPTION);
         arguments.add(reportPath.getRemote());
+
+        arguments.add(CONFIG_OPTION);
+        arguments.add(getConfigPath());
+
         return arguments;
+    }
+
+    private String getConfigPath() throws IOException {
+        if (StringUtils.isNotBlank(this.configPath)) {
+            return this.configPath;
+        }
+        return commandline.getConfigPathAsString();
     }
 
     private ArgumentListBuilder getAllure1Arguments(@Nonnull List<FilePath> resultsPaths,
@@ -83,5 +101,4 @@ public class ReportBuilder {
         arguments.addQuoted(reportPath.getRemote());
         return arguments;
     }
-
 }

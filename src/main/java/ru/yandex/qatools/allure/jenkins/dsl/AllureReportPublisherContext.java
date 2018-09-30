@@ -40,6 +40,10 @@ class AllureReportPublisherContext implements Context {
         getPublisher().setCommandline(commandline);
     }
 
+    public void configPath(String configPath) {
+        getPublisher().setConfigPath(configPath);
+    }
+
     public void property(String key, String value) {
         getPublisher().getProperties().add(new PropertyConfig(key, value));
     }

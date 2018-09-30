@@ -15,16 +15,13 @@ import java.util.List;
  * eroshenkoam.
  * 30/07/14
  */
+@Deprecated
 public class AllureReportConfig implements Serializable {
 
     private String jdk;
 
     private String commandline;
 
-    /**
-     * @deprecated Please, someone write why is this deprecated?
-     */
-    @Deprecated
     private String resultsPattern;
 
     private List<PropertyConfig> properties = new ArrayList<>();
