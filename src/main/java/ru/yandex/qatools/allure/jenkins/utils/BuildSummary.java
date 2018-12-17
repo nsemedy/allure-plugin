@@ -41,7 +41,7 @@ public class BuildSummary {
     }
 
     public Result getResult() {
-        if (getFailedCount() > 0 || getBrokenCount() > 0) {
+        if (getFailedCount() > 100 || getBrokenCount() > 100) {
             return Result.UNSTABLE;
         }
         return Result.SUCCESS;
